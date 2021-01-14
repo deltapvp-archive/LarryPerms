@@ -9,7 +9,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'luckperms'
+rootProject.name = 'larryperms'
 include (
         'api',
         'common',
