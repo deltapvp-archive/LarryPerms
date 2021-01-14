@@ -18,7 +18,7 @@ It is:
 LarryPerms uses Gradle to handle dependencies & building.
 
 #### Requirements
-* IDK, be as stupid as me?
+* Be Larry.
 
 ## Contributing
 #### Pull Requests
