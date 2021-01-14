@@ -75,21 +75,12 @@ import net.luckperms.api.event.sync.ConfigReloadEvent;
 import net.luckperms.api.event.sync.PostSyncEvent;
 import net.luckperms.api.event.sync.PreNetworkSyncEvent;
 import net.luckperms.api.event.sync.PreSyncEvent;
-import net.luckperms.api.event.track.TrackCreateEvent;
-import net.luckperms.api.event.track.TrackDeleteEvent;
-import net.luckperms.api.event.track.TrackLoadAllEvent;
-import net.luckperms.api.event.track.TrackLoadEvent;
-import net.luckperms.api.event.track.mutate.TrackAddGroupEvent;
-import net.luckperms.api.event.track.mutate.TrackClearEvent;
-import net.luckperms.api.event.track.mutate.TrackRemoveGroupEvent;
 import net.luckperms.api.event.type.Cancellable;
 import net.luckperms.api.event.type.ResultEvent;
 import net.luckperms.api.event.user.UserCacheLoadEvent;
 import net.luckperms.api.event.user.UserDataRecalculateEvent;
 import net.luckperms.api.event.user.UserFirstLoginEvent;
 import net.luckperms.api.event.user.UserLoadEvent;
-import net.luckperms.api.event.user.track.UserDemoteEvent;
-import net.luckperms.api.event.user.track.UserPromoteEvent;
 import net.luckperms.api.extension.Extension;
 import net.luckperms.api.model.PlayerSaveResult;
 import net.luckperms.api.model.data.DataType;
@@ -283,34 +274,6 @@ public final class EventDispatcher {
         return postCancellable(PreSyncEvent.class, initialState);
     }
 
-    public void dispatchTrackCreate(Track track, CreationCause cause) {
-        postAsync(TrackCreateEvent.class, track.getApiProxy(), cause);
-    }
-
-    public void dispatchTrackDelete(Track track, DeletionCause cause) {
-        postAsync(TrackDeleteEvent.class, track.getName(), ImmutableList.copyOf(track.getGroups()), cause);
-    }
-
-    public void dispatchTrackLoadAll() {
-        postAsync(TrackLoadAllEvent.class);
-    }
-
-    public void dispatchTrackLoad(Track track) {
-        postAsync(TrackLoadEvent.class, track.getApiProxy());
-    }
-
-    public void dispatchTrackAddGroup(Track track, String group, List<String> before, List<String> after) {
-        postAsync(TrackAddGroupEvent.class, track.getApiProxy(), ImmutableList.copyOf(before), ImmutableList.copyOf(after), group);
-    }
-
-    public void dispatchTrackClear(Track track, List<String> before) {
-        postAsync(TrackClearEvent.class, track.getApiProxy(), ImmutableList.copyOf(before), ImmutableList.of());
-    }
-
-    public void dispatchTrackRemoveGroup(Track track, String group, List<String> before, List<String> after) {
-        postAsync(TrackRemoveGroupEvent.class, track.getApiProxy(), ImmutableList.copyOf(before), ImmutableList.copyOf(after), group);
-    }
-
     public void dispatchUserCacheLoad(User user, UserCachedDataManager data) {
         postAsync(UserCacheLoadEvent.class, user.getApiProxy(), data);
     }
@@ -365,16 +328,6 @@ public final class EventDispatcher {
         postAsync(UserLoadEvent.class, user.getApiProxy());
     }
 
-    public void dispatchUserDemote(User user, Track track, String from, String to, @Nullable Sender sender) {
-        Source source = sender == null ? UnknownSource.INSTANCE : new EntitySourceImpl(new SenderPlatformEntity(sender));
-        postAsync(UserDemoteEvent.class, source, track.getApiProxy(), user.getApiProxy(), Optional.ofNullable(from), Optional.ofNullable(to));
-    }
-
-    public void dispatchUserPromote(User user, Track track, String from, String to, @Nullable Sender sender) {
-        Source source = sender == null ? UnknownSource.INSTANCE : new EntitySourceImpl(new SenderPlatformEntity(sender));
-        postAsync(UserPromoteEvent.class, source, track.getApiProxy(), user.getApiProxy(), Optional.ofNullable(from), Optional.ofNullable(to));
-    }
-
     private static ApiPermissionHolder proxy(PermissionHolder holder) {
         if (holder instanceof Group) {
             return ((Group) holder).getApiProxy();
@@ -397,7 +350,6 @@ public final class EventDispatcher {
                 GroupLoadEvent.class,
                 LogBroadcastEvent.class,
                 LogNetworkPublishEvent.class,
-                LogNotifyEvent.class,
                 LogPublishEvent.class,
                 LogReceiveEvent.class,
                 NodeAddEvent.class,
@@ -413,19 +365,10 @@ public final class EventDispatcher {
                 PostSyncEvent.class,
                 PreNetworkSyncEvent.class,
                 PreSyncEvent.class,
-                TrackCreateEvent.class,
-                TrackDeleteEvent.class,
-                TrackLoadAllEvent.class,
-                TrackLoadEvent.class,
-                TrackAddGroupEvent.class,
-                TrackClearEvent.class,
-                TrackRemoveGroupEvent.class,
                 UserCacheLoadEvent.class,
                 UserDataRecalculateEvent.class,
                 UserFirstLoginEvent.class,
                 UserLoadEvent.class,
-                UserDemoteEvent.class,
-                UserPromoteEvent.class
         );
     }
 
