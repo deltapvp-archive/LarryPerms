@@ -1,7 +1,7 @@
 ![](https://imgur.com/dGdzT32.png "Banner")
 # LarryPerms
 
-[![Discord](https://img.shields.io/discord/731708996997742702.svg?label=discord&logo=discord)](https://discord.gg/Dx6SSkx)
+[![Discord](https://discord.gg/Dx6SSkx)
 
 LuckPerms is a permissions plugin for Minecraft servers. It allows server admins to control what features players can use by creating groups and assigning permissions.
 
