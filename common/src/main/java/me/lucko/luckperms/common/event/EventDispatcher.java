@@ -369,7 +369,6 @@ public final class EventDispatcher {
                 UserDataRecalculateEvent.class,
                 UserFirstLoginEvent.class,
                 UserLoadEvent.class,
-        );
     }
 
 }
